@@ -43,12 +43,10 @@ int implement(){
         int val2=pop2();
         char ch=pop1();
         int ans=apply(val1,val2,ch);
-        printf("%c \n",ch);
         return ans;
 }
 void evaluateExpression(char *s){
    int l=strlen(s);
-     printf("string length-%d",l);
       op.top1=-1;
      value.top2=-1;
      int isvalid=1;
@@ -57,7 +55,6 @@ void evaluateExpression(char *s){
             continue;
         }
        int res=check(s[i]);
-       printf("%c-%d \n",s[i],res);
         if(res==0){
             isvalid=0;
             break;
@@ -75,7 +72,6 @@ void evaluateExpression(char *s){
         }
          else if(s[i]=='('){
              push1(s[i]);
-             printf("%d-%c \n",op.top1,op.operate[op.top1]);
          }
          else if(isdigit1(s[i])){
              int val=0;
@@ -84,7 +80,6 @@ void evaluateExpression(char *s){
                  i++;
              }
              push2(val);
-             printf("%d-%d \n",value.top2,value.values[value.top2]);
              i--;
          }
          else if(s[i]==')'){
@@ -100,7 +95,6 @@ void evaluateExpression(char *s){
                 }
                 else{
                 push2(ans);
-                printf("%d-%d\n",value.top2,value.values[value.top2]);
                 }
             }
             op.top1=op.top1-1;
@@ -118,11 +112,9 @@ void evaluateExpression(char *s){
                 }
                 else{
                 push2(ans);
-                 printf("%d-%d\n",value.top2,value.values[value.top2]);
                 }
             } 
               push1(s[i]);
-             printf("%c-%c\n",op.top1,s[i]);
             }
          }   
      if(isvalid){
@@ -138,7 +130,6 @@ void evaluateExpression(char *s){
                 }
                 else{
                 push2(ans);
-                printf("%d-%d\n",value.top2,value.values[value.top2]);
                 }
      }
      if(!iszero){
@@ -147,7 +138,8 @@ void evaluateExpression(char *s){
      }
      else{
      printf("\n");
-    printf("%d\n",value.values[0]); } }  }
+    printf("Ans: %d\n",value.values[0]);
+     } }  }
      else{
         printf("Error:Invalid Expression");
      }  } 
