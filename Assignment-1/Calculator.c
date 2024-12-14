@@ -1,80 +1,64 @@
 #include <stdio.h>
 #include<string.h>
-#include<math.h>
 struct stack{
     int values[100];
     char operate[100];
     int top1;
     int top2;
 };
+  struct stack op;
+  struct stack value;
 int isdigit1(char ch){
-    int x=ch-'0';
-    if(x>=0 && x<=9){
-       return 1;
-    }
-    return 0;
+    return ch>='0' && ch<='9';
 }
-int apply(int x,int y, char ch){
-    if(ch=='+'){
-        return x+y;
-    }
-    else if(ch=='-'){
-        return y-x;
-    }
-    else if(ch=='*'){
-        return x*y;
-    }
-    else if(ch=='/'){
-        if(x==0){
+int apply(int val1,int val2, char ch){
+    if(ch=='+') return val1+val2;
+    if(ch=='-') return val1-val2;
+    if(ch=='*')  return val1*val2;
+    if(ch=='/'){
+        if(val1==0){
             printf("Error: Division by Zero");
             return -2;
         }
-        float z= y/x;
-        return floor(z);
+        float ans= val2/val1;
+        return (int)ans;
     }
-    else{
-        return -1;
-    }
+    return -1;
 }
 int precedence(char ch){
-   
-    if(ch=='*'|| ch=='/'){
-        return 2;
-    }
-    else if(ch=='+' || ch=='-'){
-        return 1;
-    }
+    if(ch=='*'|| ch=='/') return 2;
+    if(ch=='+' || ch=='-') return 1;
     return 0;
 }
 int check(char ch){
-    if(ch=='+' || ch=='-' || ch=='*' || ch=='/' || ch=='('||ch==')' || ch-'0'>=0 && ch-'0'<=9){
-        return 1;
-    }
+ if(ch=='+' || ch=='-' || ch=='*' || ch=='/' || ch=='('||ch==')' || ch-'0'>=0 && ch-'0'<=9) return 1;
     return 0;
 }
-int main() {
-    // Write C code here
-    // printf("Try programiz.pro");
-    struct stack op;
-    struct stack value;
-    // int n;
-    char s[100];
-    printf("enter string");
-    // scanf("%s",&s);
-    fgets(s,100,stdin);
-    printf("%s \n",s);
-     op.top1=-1;
-     value.top2=-1;
-     int l=strlen(s);
+void push1(char ch){ op.operate[++op.top1]=ch;}
+void push2(int val){value.values[++value.top2]=val;}
+int pop2(){  return value.values[value.top2--];}
+char pop1(){ return op.operate[op.top1--];}
+int implement(){
+        int val1=pop2();
+        int val2=pop2();
+        char ch=pop1();
+        int ans=apply(val1,val2,ch);
+        printf("%c \n",ch);
+        return ans;
+}
+void evaluateExpression(char *s){
+   int l=strlen(s);
      printf("string length-%d",l);
+      op.top1=-1;
+     value.top2=-1;
      int isvalid=1;
      for(int i=0;i<l-1;i++){
         if(s[i]==' '){
             continue;
         }
-       int y=check(s[i]);
-       printf("%c-%d \n",s[i],y);
-        if(y==0){
+       int res=check(s[i]);
+       printf("%c-%d \n",s[i],res);
+        if(res==0){
             isvalid=0;
             break;
         }
@@ -90,123 +74,89 @@ int main() {
             continue;
         }
          else if(s[i]=='('){
-            // printf(" Entered in %d",i);
-             op.top1=op.top1+1;
-             op.operate[op.top1]=s[i];
+             push1(s[i]);
              printf("%d-%c \n",op.top1,op.operate[op.top1]);
          }
          else if(isdigit1(s[i])){
-            // printf("entered in isdigit %d",i);
-             // to check whether values are of 1 digit or more tahn that
              int val=0;
              while(i<l && isdigit1(s[i])){
                  val=val*10+(s[i]-'0');
                  i++;
              }
-             value.top2=value.top2+1;
-             value.values[value.top2]=val;
+             push2(val);
              printf("%d-%d \n",value.top2,value.values[value.top2]);
              i--;
          }
          else if(s[i]==')'){
-            // printf("entered in  %d",i);
             while(op.top1!=-1 && op.operate[op.top1]!='('){
-                int x=value.values[value.top2];
-                value.top2=value.top2-1;
-                int y=value.values[value.top2];
-                value.top2=value.top2-1;
-                char ch=op.operate[op.top1];
-                op.top1=op.top1-1;
-                value.top2=value.top2+1;
-                int m=apply(x,y,ch);
-                if(m==-1){
+                int ans=implement();
+                if(ans==-1){
                     isvalid=0;
                     break;
                 }
-                 if(m==-2){
+                 if(ans==-2){
                     iszero=1;
                     break;
                 }
                 else{
-                value.values[value.top2]=m;
+                push2(ans);
                 printf("%d-%d\n",value.top2,value.values[value.top2]);
                 }
             }
             op.top1=op.top1-1;
          }
          else{
-            //  printf("entered in else %d",i);
             while(op.top1!=-1 && precedence(op.operate[op.top1])>=precedence(s[i])){
-                 int x=value.values[value.top2];
-                value.top2=value.top2-1;
-                int y=value.values[value.top2];
-                value.top2=value.top2-1;
-                char ch=op.operate[op.top1];
-                printf("%c \n",ch);
-                op.top1=op.top1-1;
-                value.top2=value.top2+1;
-                int m=apply(x,y,ch);
-                if(m==-1){
+                int ans=implement();
+                if(ans==-1){
                     isvalid=0;
                     break;
                 }
-                if(m==-2){
+                if(ans==-2){
                     iszero=1;
                     break;
                 }
                 else{
-                value.values[value.top2]=m;
+                push2(ans);
                  printf("%d-%d\n",value.top2,value.values[value.top2]);
                 }
             } 
-              op.top1=op.top1+1;
-              op.operate[op.top1]=s[i];
+              push1(s[i]);
              printf("%c-%c\n",op.top1,s[i]);
-           
             }
-
-         }
-         
+         }   
      if(isvalid){
      while(op.top1!=-1 ){
-         int x=value.values[value.top2];
-                value.top2=value.top2-1;
-                int y=value.values[value.top2];
-                value.top2=value.top2-1;
-                char ch=op.operate[op.top1];
-                printf("%c \n",ch);
-                op.top1=op.top1-1;
-                value.top2=value.top2+1;
-                int m=apply(x,y,ch);
-                if(m==-1){
+                int ans=implement();
+                if(ans==-1){
                     isvalid=0;
                     break;
                 }
-                 if(m==-2){
+                 if(ans==-2){
                     iszero=1;
                     break;
                 }
                 else{
-                value.values[value.top2]=m;
+                push2(ans);
                 printf("%d-%d\n",value.top2,value.values[value.top2]);
                 }
      }
-     if(iszero){
-        return 0;
-     }
-     else{
+     if(!iszero){
      if(op.top1!=-1){
         printf("Error:Invalid Expression");
      }
      else{
      printf("\n");
-    printf("%d\n",value.values[0]);
-     }
-     }
-     }
+    printf("%d\n",value.values[0]); } }  }
      else{
         printf("Error:Invalid Expression");
+     }  } 
      }
-     }
+int main() {
+    char s[100];
+    printf("enter string");
+    fgets(s,100,stdin);
+    printf("%s \n",s);
+    evaluateExpression(s);
     return 0;
 }
