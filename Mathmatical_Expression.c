@@ -1,5 +1,5 @@
 #include<stdio.h>
-int solve1(int B,int N,int M){
+int calculate(int B,int N,int M){
     int pow=1;
     for(int i=0;i<N;i++){
      pow=pow*B;
@@ -11,13 +11,13 @@ int main(){
     int B,N,M;
     do{
     printf("Enter value such that M>1 and N>=0\n");
-    printf("Enter the value of base:");
+    printf("Base(B):");
     scanf("%d",&B);
-    printf("Enter the value of exponent:");
+    printf("Exponent(E):");
     scanf("%d",&N);
-    printf("Enter the value of modulus:");
+    printf("Modulus(M):");
     scanf("%d",&M);}while(M<1 ||N<0);
-    int x=solve1(B,N,M);
-    printf("ans:%d",x);
+    int result=calculate(B,N,M);
+    printf("Result:%d",result);
     return 0;
 }
