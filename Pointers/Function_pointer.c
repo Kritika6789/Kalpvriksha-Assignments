@@ -1,7 +1,7 @@
 #include<stdio.h>
 int greet(){
-    int x=5;
-   return x;
+    int value=5;
+   return value;
 }
 int main(){
  int (*ptr)()=greet;

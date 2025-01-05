@@ -37,17 +37,17 @@ int main() {
     for(int i=0;i<N;i++){
         arr[i]=malloc(N*sizeof(int));
     }
-    for(int i=0;i<N;i++){
-        for(int j=0;j<N;j++){
-            printf("enter %d %d",i,j);
-            scanf("%d",&arr[i][j]);
+    for(int row=0;row<N;row++){
+        for(int col=0;col<N;col++){
+            printf("enter %d %d",row,col);
+            scanf("%d",&arr[row][col]);
         }
     }
     int *ans=(int*)malloc(N*N*sizeof(int));
     spiral(arr,N,ans);
     int total=N*N;
-    for(int i=0;i<total;i++){
-        printf("%d ",ans[i]);
+    for(int row=0;row<total;row++){
+        printf("%d ",ans[row]);
     }
     /* Enter your code here. Read input from STDIN. Print output to STDOUT */    
     return 0;

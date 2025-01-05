@@ -1,9 +1,9 @@
 #include<stdio.h>
 int main(){
-    int x=10;
-    float y=5.5;
+    int value1=10;
+    float value2=5.5;
     void *ptr;
-    ptr=&y;
+    ptr=&value2;
     printf("value is %.1f",*(float*)ptr);
     return 0;
 }
