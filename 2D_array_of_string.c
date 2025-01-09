@@ -25,7 +25,7 @@
     printf("Number of names starting with a vowel:%d\n",first_letter_vowel);
     printf("Longest name : %s",ans);
     }
-    bool solve_string(char ***name,int nrow,int ncolumn){
+    void solve_string(char ***name,int nrow,int ncolumn){
          bool isValidString=true;
     for(int row=0;row<nrow;row++){
         for(int column=0;column<ncolumn;column++){
@@ -41,12 +41,11 @@
     }
     if(!isValidString){
         printf("string with a maximum length of 50 characters is allowed only");
-        return false;
+        return ;
     }
     else{
         Name_calculate(name,nrow,ncolumn);
     }
-    return isValidString;
     }
     void solve(){
         int nrow,ncolumn;
@@ -64,7 +63,7 @@
             name[row][column]=(char*)malloc(51*sizeof(char));
         }
     }
-       bool isvalid=solve_string(name,nrow,ncolumn);
+       solve_string(name,nrow,ncolumn);
         }
         else{
             printf("Rule:\n");
