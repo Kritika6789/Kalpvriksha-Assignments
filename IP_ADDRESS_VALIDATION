@@ -1,0 +1,90 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+#include<string.h>
+#include<stdbool.h>
+void solve(char *IP,int length){
+    if(length>15){
+        printf("Input string maxmimum length is 15");
+        return;
+    }
+    bool space=false;
+    for(int index=0;index<length;index++){
+        if(IP[index]==' '){
+            printf("Whitespace no allowed");
+            space=true;
+            break;
+        }
+    }
+    if(space){
+        printf("Invalid");
+        return;
+    }
+    int dot=0;
+    bool isvalid=true;
+    for(int index=0;index<length;index++){
+        if(IP[index]=='.' && index<length-1){
+            dot++;
+            if(IP[index+1]=='.'){
+                isvalid=false;
+                break;
+            }
+        }
+        else if(IP[index]>='0' && IP[index]<='9'){
+            continue;
+        }
+        else{
+            // printf("Invalid");
+            isvalid=false;
+            break;
+        }
+    }
+     if(dot!=3 || !isvalid){
+        
+        printf("Invalid");
+        return;
+    }
+    if(!isvalid){
+        printf("Invalid");
+        return;
+    }
+   
+    //199.255.255.56
+    for(int index=0;index<length;index++){
+        if(IP[index]=='0' && IP[index+1]>='0' && IP[index+1]<='9'){
+            isvalid=false;
+            break;
+        }
+        else if(IP[index]>='0' && IP[index]<='9'){
+            int number=0;
+            while(index<length && IP[index]>='0' && IP[index]<='9'){
+             number=number*10+IP[index]-'0';
+             index++;
+            }
+            if(number>=0 && number<=255){
+            }
+            else{
+                isvalid=false;
+                break;
+            }
+        }
+        
+    }
+    
+    if(!isvalid){
+        printf("Invalid");
+        return;
+    }
+    else{
+        printf("Valid");
+    }
+    
+}
+int main() {
+     char *IP;
+     printf("Enter IP address:");
+     scanf("%s",IP);
+     int length=strlen(IP);
+     solve(IP,length);
+
+    return 0;
+}
