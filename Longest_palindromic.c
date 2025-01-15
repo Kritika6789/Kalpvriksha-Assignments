@@ -1,87 +1,81 @@
-#include<stdio.h>
+// Online C compiler to run C program online
+#include <stdio.h>
 #include<stdlib.h>
+#include<string.h>
 #include<stdbool.h>
 #include<limits.h>
-int str_length(char *str){
+void str_cpy(char *dest,char *src){
     int index=0;
-    while(str[index]!='\0'){
+    while(1){
+        dest[index]=src[index];
+        if(dest[index]=='\0'){
+       break;
+}
+        index++;
+    }
+  
+}
+int str_len(char *s){
+    int index=0;
+    while(s[index]!='\0'){
         index++;
     }
     return index;
 }
-char *reverse(char *str){
-    
-    int length=str_length(str);
-    char *str1=(char*)malloc((length+1)*sizeof(char));
-    for(int index=0;index<length;index++){
-        str1[index]=str[index];
-    }
+bool ispalindrome(char *ans,int length){
     int start=0;
     int end=length-1;
-    while(start<end){
-        int temp=str1[start];
-        str1[start]=str1[end];
-        str1[end]=temp;
-        start++;
-        end--;
-    }
-    return str1;
-}
-void longestPalindromeString(char *str,int index,int length,char*ans,int *max_length){
-if(index==length){
-    return;
-}
-printf("%d-%d\n",index,length);
-int temp=index;
-int end=length-1;
-bool ispalindrome=false;
-for(int index1=end;index1>=index;index1--){
-    if(str[index1]==str[index]){
-        int temp1=index;
-        int temp2=index1;
-      while(temp1<=temp2){
-        if(str[temp1]==str[temp2]){
-            temp1++;
-            temp2--;
-            ispalindrome=true;
+    while(start<=end){
+        if(ans[start]==ans[end]){
+            start++;
+            end--;
+            continue;
         }
         else{
-            ispalindrome=false;
-            break;
+            return false;
         }
-      }
-      if(ispalindrome){
-       int l=index1-index+1;
-       if(l>*max_length){
-        *max_length=l;
-        int j=0;
-        for(int i=index;i<=index1;i++){
-            ans[j++]=str[i];
+    }
+    return true;
+}
+void longestPalindrome(char* s) {
+    int length=str_len(s);
+    char **ans=(char**)malloc(1000*sizeof(char*));
+    char *a=(char*)malloc(100*sizeof(char));
+    int index=0;
+    for(int i=0;i<length;i++){
+        int k=0;
+        for(int j=i;j<length;j++){
+          a[k++]=s[j];
+          a[k]='\0';
+          int l1=str_len(a);
+          ans[index]=(char*)malloc((l1)*sizeof(char));
+          str_cpy(ans[index],a);
+          index++;
         }
-        ans[j]='\0';
+    }
+    int longest=INT_MIN;
+   int longest_index=-1;
+    for(int i=0;i<index;i++){
+       int length=str_len(ans[i]);
+       if(ispalindrome(ans[i],length)){
+           if(length>longest){
+               longest=length;
+               longest_index=i;
+           }
        }
-       break;
-      }
+    }
+    if(longest_index!=-1){
+    printf("%s",ans[longest_index]);
     }
     else{
-        continue;
+        printf("not exist");
     }
 }
-longestPalindromeString(str,index+1,length,ans,max_length);
-}
-int main(){
-    char *str=(char*)malloc(100*sizeof(char));
-    printf("Enter string1:");
-    scanf("%s",str);
-    // char *reverse_string=(char*)malloc(100*sizeof(char));
-    // reverse_string=reverse(str);
-    printf("string:%s\n",str);
-    // printf("reversed string:%s",reverse_string);
-    int length1=str_length(str);
-    int max_length=INT_MIN;
-    char *ans=(char*)malloc((length1+1)*sizeof(char));
-    longestPalindromeString(str,0,length1,ans,&max_length);
+int main() {
+    char *s=(char*)malloc(100*sizeof(char));
+    printf("Enter string:");
+    scanf("%s",s);
+    longestPalindrome(s);
 
-    printf("Output: %s",ans);
     return 0;
 }
