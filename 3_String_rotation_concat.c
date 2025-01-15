@@ -19,8 +19,13 @@ void str_concat(char *str1,char *str2){
     str2[final_length-1]='\0';
 }
 bool solve(char *str1,char *str2){
+     int length1=str_length(str1);
+     int lengthstr2=str_length(str2);
+     if(length1!=lengthstr2){
+         return false;
+     }
     str_concat(str2,str2);
-    int length1=str_length(str1);
+    
       int length2=str_length(str2);
       int str1_index=0;
       bool isfound=false;
