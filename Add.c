@@ -46,7 +46,7 @@ void sum(node **head1,node **head2,node **head3,node **tail3){
         int sum=temp1->data+temp2->data+carry;
         int value=sum%10;
         carry=sum/10;
-        insertAtEnd(head3,tail3,value);
+        insertAtEnd(&(*head3),&(*tail3),value);
         temp1=temp1->next;
         temp2=temp2->next;
     }
@@ -54,18 +54,18 @@ void sum(node **head1,node **head2,node **head3,node **tail3){
         int sum=temp1->data+carry;
         int value=sum%10;
         carry=sum/10;
-        insertAtEnd(head3,tail3,value);
+        insertAtEnd(&(*head3),&(*tail3),value);
         temp1=temp1->next;
     }
     while(temp2!=NULL){
          int sum=temp2->data+carry;
         int value=sum%10;
         carry=sum/10;
-        insertAtEnd(head3,tail3,value);
+        insertAtEnd(&(*head3),&(*tail3),value);
         temp2=temp2->next;
     }
     if(carry==1){
-        insertAtEnd(head3,tail3,1);
+        insertAtEnd(&(*head3),&(*tail3),1);
     }
     
 }
