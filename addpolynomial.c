@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include<stdlib.h>
 #include<limits.h>
+#include<stdbool.h>
 typedef struct node node;
 struct node{
     int data;
@@ -23,8 +24,16 @@ void print(node **head,node **tail){
             }
             temp=temp->next;
         }
-        printf("%d",temp->data);
-        temp=temp->next;
+          if(temp->power==1){
+                 printf("%dx",temp->data);
+            }
+            else if(temp->power>1){
+            printf("%dx%d",temp->data,temp->power);
+            }
+            else{
+                printf("%d",temp->data);
+            }
+            temp=temp->next;
     printf("\n");
 }
 
@@ -41,10 +50,36 @@ void insertNode(int value,int power1,node **head,node **tail){
     (*tail)->next=newNode;
     *tail=newNode;
 }
+int listLength(node **head){
+    node *temp=*head;
+    int index=0;
+    while(temp!=NULL){
+        index++;
+        temp=temp->next;
+    }
+    return index;
+}
+int max(int value1,int value2){
+    return value1>value2?value1:value2;
+}
 void add(node **head1,node **tail1,node **head2,node **tail2,node **head3,node **tail3 ){
     node *temp1=*head1;
     while(temp1!=NULL){
         int sum=temp1->data;
+        node *temp4=*head3;
+        bool isfound=false;
+        while(temp4!=NULL){
+            printf("enter");
+            if(temp4->power==temp1->power){
+                printf("found");
+                temp4->data+=temp1->data;
+                isfound=true;
+                break;
+            }
+            temp4=temp4->next;
+        }
+        printf("\n");
+        if(!isfound){
         node *temp2=*head2;
         while(temp2!=NULL){
             if(temp1->power==temp2->power){
@@ -53,8 +88,43 @@ void add(node **head1,node **tail1,node **head2,node **tail2,node **head3,node *
             temp2=temp2->next;
         }
         insertNode(sum,temp1->power,&(*head3),&(*tail3));
-        temp1=temp1->next;
     }
+    temp1=temp1->next;
+    }
+    int maxPower=INT_MIN;
+    node *temp=*head1;
+    while(temp!=NULL){
+        int power1=temp->power;
+        maxPower=max(maxPower,power1);
+        temp=temp->next;
+    }
+    temp=*head2;
+      while(temp!=NULL){
+        int power1=temp->power;
+        maxPower=max(maxPower,power1);
+        temp=temp->next;
+    }
+    node *result[maxPower+1];
+    for(int i=0;i<=maxPower;i++){
+      result[i]=(node*)malloc(sizeof(node));
+      result[i]=NULL;
+    }
+    
+    node *temp3=*head3;
+    while(temp3!=NULL){
+        int index=temp3->power;
+        result[index]=temp3;
+        temp3=temp3->next;
+    }
+   temp3=*head2;
+   while(temp3!=NULL){
+       int power1=temp3->power;
+       if(result[power1]==NULL){
+           insertNode(temp3->data,temp3->power,&(*head3),&(*tail3));
+           result[power1]=temp3;
+       }
+       temp3=temp3->next;
+   }
 }
 int main() {
      node *head1=NULL;
