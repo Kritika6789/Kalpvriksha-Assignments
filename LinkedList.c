@@ -36,7 +36,7 @@ void insertAtBeginning(int value){
    head=newNode2;
 }
 void insertAtPosition(int position,int value){
-    
+   
     if(position<=0 || position>lengthOfList){
         printf("Invalid Position\n");
     }
@@ -58,6 +58,7 @@ void insertAtPosition(int position,int value){
         }
         newNode3->next=current->next;
         current->next=newNode3;
+         lengthOfList++;
     }
 }
 void display(){
